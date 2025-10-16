@@ -136,14 +136,10 @@ dotnet user-secrets set "MultiDomainSmtpSettings:example.com:Password" "your-pas
 export MultiDomainSmtpSettings__example_com__Password="your-password"
 ```
 
-## License
-
-MIT License
 
 ## Support
 
 - 🐛 [Report Issues](https://github.com/digitalwonderlab/umbraco-multidomain-email/issues)
-- 📧 Email: support@digitalwonderlab.com
 
 ---
 
