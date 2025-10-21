@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\NathanL\\source\\repos\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail.csproj": {
-      "version": "1.0.1",
+      "version": "2.1.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\NathanL\\source\\repos\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail.csproj",
         "projectName": "DigitalWonderlab.MultiDomainEmail",
@@ -13,6 +13,7 @@
         "packagesPath": "C:\\Users\\NathanL\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\NathanL\\source\\repos\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail\\obj\\",
         "projectStyle": "PackageReference",
+        "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -22,15 +23,21 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net8.0",
+          "net9.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\NathanL\\source\\repos\\DigitalWonderlab.MultiDomainEmail\\DigitalWonderlab.MultiDomainEmail\\bin\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
+            "projectReferences": {}
+          },
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -50,17 +57,51 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Umbraco.Cms.Web.BackOffice": {
+            "Umbraco.Cms.Core": {
               "target": "Package",
-              "version": "[13.0.0, )"
+              "version": "[13.0.0, 15.0.0)"
             },
-            "Umbraco.Cms.Web.Website": {
+            "Umbraco.Cms.Web.Common": {
               "target": "Package",
-              "version": "[13.0.0, )"
+              "version": "[13.0.0, 15.0.0)"
             },
             "Umbraco.Forms.Core": {
               "target": "Package",
-              "version": "[13.0.0, )"
+              "version": "[13.0.0, 15.0.0)"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        },
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Umbraco.Cms.Core": {
+              "target": "Package",
+              "version": "[15.0.0, 17.0.0)"
+            },
+            "Umbraco.Cms.Web.Common": {
+              "target": "Package",
+              "version": "[15.0.0, 17.0.0)"
+            },
+            "Umbraco.Forms.Core": {
+              "target": "Package",
+              "version": "[15.0.0, 17.0.0)"
             }
           },
           "imports": [

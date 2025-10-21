@@ -103,20 +103,47 @@ Hello {Name}, thank you for contacting us on {submissionDate}.
 ## How It Works
 
 ### Domain Detection
-- Extracts domain from request URL
-- Removes `www.` prefix automatically
-- Case-insensitive matching
+
+- Extracts domain from current HTTP request
+- **Automatically strips port numbers** - `localhost:44322` → `localhost`
+- **Removes `www.` prefix** - `www.example.com` → `example.com`
+- **Case-insensitive matching** - `Example.COM` matches `example.com` config
+- Works seamlessly across all environments (localhost, staging, production)
+
+**Important:** Configure domains **without** port numbers in your `appsettings.json`:
+- ✅ Correct: `"localhost"`
+- ❌ Incorrect: `"localhost:44322"`
+- ✅ Correct: `"example.com"`
+- ❌ Incorrect: `"example.com:443"`
+
+The package automatically handles all ports for each domain, so one config entry works everywhere.
 
 ### Configuration Fallback
-1. Domain-specific config (e.g., `example.com`)
-2. `default` config
-3. Legacy `SmtpSettings` (SMTP only)
+
+The system follows this priority order when looking for SMTP settings:
+
+1. **Domain-specific config** - Exact match (e.g., `example.com`)
+2. **`default` config** - Fallback for unmatched domains
+3. **Legacy `SmtpSettings`** - Umbraco's standard SMTP config (SMTP only, not reCAPTCHA)
+
+### Local Development
+
+For local testing with tools like MailHog:
+- Use `localhost` (without port) in your configuration
+- Works with any local port: `:5000`, `:44322`, `:3000`, etc.
+- No need to configure multiple entries for different ports
 
 ## Customizing Email Templates
 
-Email templates can be customized by editing:
+Email templates can be customized by modifying the workflow source code:
 
 **File:** `Workflows/MultiDomainEmailWorkflow.cs`
+
+**Methods:**
+- `BuildEmailContent()` - Admin notification email template
+- `BuildThankYouEmail()` - Submitter confirmation email template
+
+Change HTML structure, styling, or content as needed. Requires rebuilding the package after modifications.
 
 **Methods:**
 - `BuildEmailContent()` - Admin email template
@@ -136,14 +163,9 @@ dotnet user-secrets set "MultiDomainSmtpSettings:example.com:Password" "your-pas
 export MultiDomainSmtpSettings__example_com__Password="your-password"
 ```
 
-## License
-
-MIT License
-
 ## Support
 
-- 🐛 [Report Issues](https://github.com/digitalwonderlab/umbraco-multidomain-email/issues)
-- 📧 Email: support@digitalwonderlab.com
+- 🐛 [Report Issues](https://github.com/dwlgit/Multi-Domain-Email-Forms/issues)
 
 ---
 

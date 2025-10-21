@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-
 		<Title>Multi-Domain Email and Forms for Umbraco</Title>
-		<Description>Multi-domain SMTP email service and reCAPTCHA support for Umbraco Forms. Perfect for multi-site installations.</Description>
+		<Description>Multi-domain SMTP email service and reCAPTCHA support for Umbraco Forms. Supports Umbraco v13–14 (.NET 8) and v15–16+ (.NET 9).</Description>
 		<PackageTags>umbraco plugin package forms email smtp recaptcha multi-domain</PackageTags>
-		<Version>1.0.1</Version>
+		<Version>2.1</Version>
 		<Authors>Digital Wonderlab</Authors>
 		<PackageProjectUrl>https://github.com/digitalwonderlab/umbraco-multidomain-email</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,11 +14,24 @@
 		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="13.0.0" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.0.0" />
-		<PackageReference Include="Umbraco.Forms.Core" Version="13.0.0" />
+	<!-- Umbraco CMS/Forms 13–14 on .NET 8 -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Umbraco.Cms.Core" Version="[13.0.0,15.0.0)" />
+		<PackageReference Include="Umbraco.Cms.Web.Common" Version="[13.0.0,15.0.0)" />
+		<PackageReference Include="Umbraco.Forms.Core" Version="[13.0.0,15.0.0)" />
 	</ItemGroup>
+
+	<!-- Umbraco CMS/Forms 15–16+ on .NET 9 -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Umbraco.Cms.Core" Version="[15.0.0,17.0.0)" />
+		<PackageReference Include="Umbraco.Cms.Web.Common" Version="[15.0.0,17.0.0)" />
+		<PackageReference Include="Umbraco.Forms.Core" Version="[15.0.0,17.0.0)" />
+	</ItemGroup>
+
+	<!-- Define symbol for Forms v15+ branch (includes v16) -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<DefineConstants>$(DefineConstants);FORMS_15PLUS</DefineConstants>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />

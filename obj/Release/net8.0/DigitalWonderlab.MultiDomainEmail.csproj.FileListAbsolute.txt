@@ -311,3 +311,4 @@ C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab
 C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\obj\Release\net8.0\refint\DigitalWonderlab.MultiDomainEmail.dll
 C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\obj\Release\net8.0\DigitalWonderlab.MultiDomainEmail.pdb
 C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\obj\Release\net8.0\ref\DigitalWonderlab.MultiDomainEmail.dll
+C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\obj\Release\net8.0\DigitalWonderlab.MultiDomainEmail.sourcelink.json

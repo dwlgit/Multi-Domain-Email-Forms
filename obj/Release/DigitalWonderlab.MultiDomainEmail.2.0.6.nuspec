@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DigitalWonderlab.MultiDomainEmail</id>
+    <version>2.0.6</version>
+    <title>Multi-Domain Email and Forms for Umbraco</title>
+    <authors>Digital Wonderlab</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/digitalwonderlab/umbraco-multidomain-email</projectUrl>
+    <description>Multi-domain SMTP email service and reCAPTCHA support for Umbraco Forms. Supports Umbraco v13–14 (.NET 8) and v15–16+ (.NET 9).</description>
+    <tags>umbraco plugin package forms email smtp recaptcha multi-domain</tags>
+    <repository type="git" commit="f918047326a28bc99c848fe4b5a72625aa1eee51" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Umbraco.Cms.Core" version="[13.0.0, 15.0.0)" exclude="Build,Analyzers" />
+        <dependency id="Umbraco.Cms.Web.Common" version="[13.0.0, 15.0.0)" exclude="Build,Analyzers" />
+        <dependency id="Umbraco.Forms.Core" version="[13.0.0, 15.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net9.0">
+        <dependency id="Umbraco.Cms.Core" version="[15.0.0, 17.0.0)" exclude="Build,Analyzers" />
+        <dependency id="Umbraco.Cms.Web.Common" version="[15.0.0, 17.0.0)" exclude="Build,Analyzers" />
+        <dependency id="Umbraco.Forms.Core" version="[15.0.0, 17.0.0)" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\bin\Release\net8.0\DigitalWonderlab.MultiDomainEmail.dll" target="lib\net8.0\DigitalWonderlab.MultiDomainEmail.dll" />
+    <file src="C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\bin\Release\net9.0\DigitalWonderlab.MultiDomainEmail.dll" target="lib\net9.0\DigitalWonderlab.MultiDomainEmail.dll" />
+    <file src="C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\README.md" target="\README.md" />
+    <file src="C:\Users\NathanL\source\repos\DigitalWonderlab.MultiDomainEmail\DigitalWonderlab.MultiDomainEmail\icon.png" target="\icon.png" />
+  </files>
+</package>

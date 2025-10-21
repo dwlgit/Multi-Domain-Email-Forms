@@ -3,7 +3,7 @@
 	<info>
 		<package>
 			<name>Multi-Domain Email and Forms</name>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 			<iconUrl></iconUrl>
 			<license url="https://opensource.org/licenses/MIT">MIT</license>
 			<url>https://github.com/digitalwonderlab/umbraco-multidomain-email</url>
