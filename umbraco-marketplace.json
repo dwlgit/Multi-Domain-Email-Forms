@@ -1,7 +1,6 @@
 {
   "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
   "AddOnPackagesRequiredForUmbracoCloud": [],
-  "AlternateCategory": "",
   "AuthorDetails": {
     "Name": "Digital Wonderlab",
     "Description": "As a proud Certified B Corporation® and dedicated members of 1% for The Planet, we are passionate about amplifying the voices and visions of purpose-driven start-ups, SMEs, not-for-profits, and global enterprises.",

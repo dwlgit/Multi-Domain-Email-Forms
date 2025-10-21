@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Multi-domain SMTP email service and reCAPTCHA support for Umbraco Forms. Supports" +
     " Umbraco v13–14 (.NET 8) and v15–16+ (.NET 9).")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.1.7.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.7+3406ddd00169070a784c80ba35c4ddf85ccc5eea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.7+b812152011d30ae18d4cbdd0e1846a4068094adf")]
 [assembly: System.Reflection.AssemblyProductAttribute("DigitalWonderlab.MultiDomainEmail")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DigitalWonderlab.MultiDomainEmail")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.1.7.0")]
