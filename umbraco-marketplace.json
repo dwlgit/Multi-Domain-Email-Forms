@@ -4,13 +4,12 @@
   "AlternateCategory": "",
   "AuthorDetails": {
     "Name": "Digital Wonderlab",
-    "Description": "",
+    "Description": "As a proud Certified B Corporation® and dedicated members of 1% for The Planet, we are passionate about amplifying the voices and visions of purpose-driven start-ups, SMEs, not-for-profits, and global enterprises.",
     "Url": "https://digitalwonderlab.com",
-    "ImageUrl": "",
+    "ImageUrl": "https://i.imgur.com/jDN3Knz.png",
     "Contributors": [
       {
-        "Name": "",
-        "Url": ""
+        "Name": "Nathan Love"
       }
     ],
     "SyncContributorsFromRepository": false
@@ -18,9 +17,9 @@
   "Category": "Developer Tools",
   "Description": "Streamline multi-domain umbraco forms submissions with domain-specific SMTP and reCAPTCHA configurations. The ultimate solution for multi-site Umbraco installations, designed specifically for agencies managing multiple client sites.",
   "DiscussionForumUrl": "",
-  "DocumentationUrl": "https://github.com/digitalwonderlab/umbraco-multidomain-email",
+  "DocumentationUrl": "https://github.com/dwlgit/Multi-Domain-Email-Forms",
   "LicenseTypes": [ "Free" ],
-  "IssueTrackerUrl": "https://github.com/digitalwonderlab/umbraco-multidomain-email/issues",
+  "IssueTrackerUrl": "https://github.com/dwlgit/Multi-Domain-Email-Forms/issues",
   "IsSubPackageOf": "",
   "PackageType": "Package",
   "PackagesByAuthor": [],

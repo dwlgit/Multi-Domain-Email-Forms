@@ -34,7 +34,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "DigitalWonderlab.MultiDomainEmail/2.1.4": {
+      "DigitalWonderlab.MultiDomainEmail/2.1.5": {
         "dependencies": {
           "Umbraco.Cms.Core": "13.0.0",
           "Umbraco.Cms.Web.Common": "13.0.0",
@@ -4820,7 +4820,7 @@
     }
   },
   "libraries": {
-    "DigitalWonderlab.MultiDomainEmail/2.1.4": {
+    "DigitalWonderlab.MultiDomainEmail/2.1.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

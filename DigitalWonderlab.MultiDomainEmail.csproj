@@ -6,7 +6,7 @@
 		<Title>Multi-Domain Email and Forms for Umbraco</Title>
 		<Description>Multi-domain SMTP email service and reCAPTCHA support for Umbraco Forms. Supports Umbraco v13–14 (.NET 8) and v15–16+ (.NET 9).</Description>
 		<PackageTags>umbraco plugin package forms email smtp recaptcha multi-domain</PackageTags>
-		<Version>2.1.5</Version>
+		<Version>2.1.6</Version>
 		<Authors>Digital Wonderlab</Authors>
 		<PackageProjectUrl>https://github.com/digitalwonderlab/umbraco-multidomain-email</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
