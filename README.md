@@ -18,9 +18,9 @@ dotnet add package DigitalWonderlab.MultiDomainEmail
 
 ## Requirements
 
-- Umbraco CMS 13
-- Umbraco Forms 13
-- .NET 8.0
+- Umbraco CMS 13-16+
+- Umbraco Forms 13-16+
+- .NET 8.0 (v13-14) or .NET 9.0 (v15-16+)
 
 ## Configuration
 
@@ -126,30 +126,33 @@ The system follows this priority order when looking for SMTP settings:
 2. **`default` config** - Fallback for unmatched domains
 3. **Legacy `SmtpSettings`** - Umbraco's standard SMTP config (SMTP only, not reCAPTCHA)
 
+### Email Template System
+
+**Automatic Template Extraction:**
+On first startup, the package extracts customizable email templates to:
+```
+~/Views/Partials/Forms/EmailTemplates/
+├── AdminNotification.cshtml       (Admin notification emails)
+├── SubmitterConfirmation.cshtml   (Thank you emails to submitters)
+└── README.txt
+```
+
+**How It Works:**
+- **Custom templates first** - If `.cshtml` files exist, they're used
+- **Fallback protection** - Built-in templates used if custom ones are missing or fail
+- **Preserved on updates** - Your customizations won't be overwritten
+- **Easy customization** - Edit the `.cshtml` files directly, changes apply immediately
+
+**Two Email Types:**
+1. **Admin Notification** (`AdminNotification.cshtml`) - Always sent to the configured email address
+2. **Submitter Confirmation** (`SubmitterConfirmation.cshtml`) - Optional "thank you" email sent when "Send Copy To Submitter" is enabled
+
 ### Local Development
 
-For local testing with tools like MailHog:
+For local testing with tools (like MailHog):
 - Use `localhost` (without port) in your configuration
 - Works with any local port: `:5000`, `:44322`, `:3000`, etc.
 - No need to configure multiple entries for different ports
-
-## Customizing Email Templates
-
-Email templates can be customized by modifying the workflow source code:
-
-**File:** `Workflows/MultiDomainEmailWorkflow.cs`
-
-**Methods:**
-- `BuildEmailContent()` - Admin notification email template
-- `BuildThankYouEmail()` - Submitter confirmation email template
-
-Change HTML structure, styling, or content as needed. Requires rebuilding the package after modifications.
-
-**Methods:**
-- `BuildEmailContent()` - Admin email template
-- `BuildThankYouEmail()` - Submitter confirmation template
-
-Change styling, layout, or content as needed. Requires rebuilding the package.
 
 ## Security
 

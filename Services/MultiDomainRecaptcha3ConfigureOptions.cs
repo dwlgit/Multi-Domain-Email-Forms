@@ -3,29 +3,42 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Umbraco.Forms.Core.Configuration;
 
-public class MultiDomainRecaptcha3ConfigureOptions : IConfigureOptions<Recaptcha3Settings>
+namespace DigitalWonderlab.MultiDomainEmail.Services
 {
-    private readonly IHttpContextAccessor _http;
-    private readonly IConfiguration _config;
-
-    public MultiDomainRecaptcha3ConfigureOptions(IHttpContextAccessor http, IConfiguration config)
+    public class MultiDomainRecaptcha3ConfigureOptions : IConfigureOptions<Recaptcha3Settings>
     {
-        _http = http;
-        _config = config;
-    }
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
 
-    public void Configure(Recaptcha3Settings options)
-    {
-        var host = _http.HttpContext?.Request?.Host.Host?.ToLowerInvariant() ?? "default";
-        if (host.StartsWith("www.")) host = host.Substring(4);
-
-        var section = _config.GetSection($"MultiDomainRecaptcha:{host}");
-        if (!section.Exists())
+        public MultiDomainRecaptcha3ConfigureOptions(
+            IHttpContextAccessor httpContextAccessor,
+            IConfiguration configuration)
         {
-            section = _config.GetSection("MultiDomainRecaptcha:default");
+            _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
         }
 
-        options.SiteKey = section["SiteKey"];
-        options.PrivateKey = section["PrivateKey"];
+        public void Configure(Recaptcha3Settings options)
+        {
+            var host = _httpContextAccessor.HttpContext?.Request?.Host.Host?.ToLowerInvariant() ?? "default";
+
+            if (host.StartsWith("www."))
+            {
+                host = host[4..];
+            }
+
+            var section = _configuration.GetSection($"MultiDomainRecaptcha:{host}");
+
+            if (!section.Exists())
+            {
+                section = _configuration.GetSection("MultiDomainRecaptcha:default");
+            }
+
+            if (section.Exists())
+            {
+                options.SiteKey = section["SiteKey"] ?? string.Empty;
+                options.PrivateKey = section["PrivateKey"] ?? string.Empty;
+            }
+        }
     }
 }

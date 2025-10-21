@@ -1,5 +1,17 @@
-﻿using System.Text;
+﻿using DigitalWonderlab.MultiDomainEmail.Models;
 using DigitalWonderlab.MultiDomainEmail.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.Text;
 using Umbraco.Forms.Core;
 using Umbraco.Forms.Core.Attributes;
 using Umbraco.Forms.Core.Enums;
@@ -10,10 +22,10 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
     public class MultiDomainEmailWorkflow : WorkflowType
     {
 #if FORMS_15PLUS
-    // Forms v15+ (including v16) - New property editor aliases
-    private const string VIEW_TEXT = "Umb.PropertyEditorUi.TextBox";
-    private const string VIEW_TEXTAREA = "Umb.PropertyEditorUi.TextArea";
-    private const string VIEW_CHECKBOX = "Umb.PropertyEditorUi.Toggle";
+        // Forms v15+ (including v16) - New property editor aliases
+        private const string VIEW_TEXT = "Umb.PropertyEditorUi.TextBox";
+        private const string VIEW_TEXTAREA = "Umb.PropertyEditorUi.TextArea";
+        private const string VIEW_CHECKBOX = "Umb.PropertyEditorUi.Toggle";
 #else
         private const string VIEW_TEXT = "TextField";
         private const string VIEW_TEXTAREA = "TextArea";
@@ -21,16 +33,25 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
 #endif
 
         private readonly IMultiDomainEmailService _emailService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<MultiDomainEmailWorkflow> _logger;
 
-
-        public MultiDomainEmailWorkflow(IMultiDomainEmailService emailService)
+        public MultiDomainEmailWorkflow(
+            IMultiDomainEmailService emailService,
+            IWebHostEnvironment webHostEnvironment,
+            IServiceProvider serviceProvider,
+            ILogger<MultiDomainEmailWorkflow> logger)
         {
             _emailService = emailService;
+            _webHostEnvironment = webHostEnvironment;
+            _serviceProvider = serviceProvider;
+            _logger = logger;
 
             Id = new Guid("A1B2C3D4-E5F6-7890-ABCD-123456789012");
             Name = "Multi-Domain Email";
             Description = "Send email using domain-specific SMTP settings";
-            Icon = "icon-mail";
+            Icon = "icon-message";
             Group = "Services";
         }
 
@@ -58,7 +79,6 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
             View = VIEW_TEXT)]
         public string SubmitterEmailField { get; set; } = string.Empty;
 
-
         public override async Task<WorkflowExecutionStatus> ExecuteAsync(WorkflowExecutionContext context)
         {
             try
@@ -66,7 +86,7 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
                 if (!string.IsNullOrWhiteSpace(Email))
                 {
                     var processedSubject = ReplaceTokens(Subject, context);
-                    var htmlMessage = BuildEmailContent(context);
+                    var htmlMessage = await BuildEmailContentAsync(context);
                     await _emailService.SendEmailAsync(Email, processedSubject, htmlMessage, null);
                 }
 
@@ -76,15 +96,16 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
                     if (!string.IsNullOrWhiteSpace(submitterEmail))
                     {
                         var thankYouSubject = "Thank you for your submission";
-                        var thankYouHtml = BuildThankYouEmail(context);
+                        var thankYouHtml = await BuildThankYouEmailAsync(context);
                         await _emailService.SendEmailAsync(submitterEmail, thankYouSubject, thankYouHtml, null);
                     }
                 }
 
                 return WorkflowExecutionStatus.Completed;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Multi-Domain Email workflow failed for form {FormName}", context.Form.Name);
                 return WorkflowExecutionStatus.Failed;
             }
         }
@@ -145,7 +166,124 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
             return result;
         }
 
-        private string BuildEmailContent(WorkflowExecutionContext context)
+        private async Task<string> BuildEmailContentAsync(WorkflowExecutionContext context)
+        {
+            // Try to use custom template first
+            var customTemplate = await TryRenderTemplateAsync("AdminNotification", context);
+            if (!string.IsNullOrEmpty(customTemplate))
+            {
+                _logger.LogInformation("Using custom AdminNotification template");
+                return customTemplate;
+            }
+
+            // Fall back to built-in template
+            _logger.LogDebug("Using built-in AdminNotification template");
+            return BuildEmailContentFallback(context);
+        }
+
+        private async Task<string> BuildThankYouEmailAsync(WorkflowExecutionContext context)
+        {
+            // Try to use custom template first
+            var customTemplate = await TryRenderTemplateAsync("SubmitterConfirmation", context);
+            if (!string.IsNullOrEmpty(customTemplate))
+            {
+                _logger.LogInformation("Using custom SubmitterConfirmation template");
+                return customTemplate;
+            }
+
+            // Fall back to built-in template
+            _logger.LogDebug("Using built-in SubmitterConfirmation template");
+            return BuildThankYouEmailFallback(context);
+        }
+
+        private async Task<string?> TryRenderTemplateAsync(string templateName, WorkflowExecutionContext context)
+        {
+            try
+            {
+                var templatePath = $"~/Views/Partials/Forms/EmailTemplates/{templateName}.cshtml";
+                var physicalPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Views", "Partials", "Forms", "EmailTemplates", $"{templateName}.cshtml");
+
+                if (!File.Exists(physicalPath))
+                {
+                    _logger.LogDebug("Template not found: {TemplatePath}", physicalPath);
+                    return null;
+                }
+
+                var model = CreateTemplateModel(context);
+                var html = await RenderViewToStringAsync(templatePath, model);
+                return html;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to render custom template {TemplateName}, falling back to built-in", templateName);
+                return null;
+            }
+        }
+
+        private EmailTemplateModel CreateTemplateModel(WorkflowExecutionContext context)
+        {
+            var processedCustomMessage = !string.IsNullOrWhiteSpace(CustomMessage)
+                ? ReplaceTokens(CustomMessage, context).Replace("\r", "").Replace("\n", "<br/>")
+                : string.Empty;
+
+            return new EmailTemplateModel
+            {
+                FormName = context.Form.Name,
+                SubmissionDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                CustomMessage = processedCustomMessage,
+                ShowAllFields = bool.TryParse(ShowAllFields, out bool show) && show,
+                Fields = GetFormFieldsWithValues(context)
+                    .Select(f => new FormField { Name = f.Name, Value = f.Value })
+                    .ToList()
+            };
+        }
+
+        private async Task<string> RenderViewToStringAsync(string viewPath, EmailTemplateModel model)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+
+            var httpContextAccessor = scopedServices.GetRequiredService<IHttpContextAccessor>();
+
+            var httpContext = httpContextAccessor.HttpContext ?? new DefaultHttpContext
+            {
+                RequestServices = scopedServices
+            };
+
+            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+
+            using var sw = new StringWriter();
+
+            var razorViewEngine = scopedServices.GetRequiredService<IRazorViewEngine>();
+            var viewResult = razorViewEngine.GetView(null, viewPath, false);
+
+            if (!viewResult.Success)
+            {
+                throw new InvalidOperationException($"Could not find view: {viewPath}");
+            }
+
+            var viewDictionary = new ViewDataDictionary<EmailTemplateModel>(
+                new EmptyModelMetadataProvider(),
+                new ModelStateDictionary())
+            {
+                Model = model
+            };
+
+            var tempDataProvider = scopedServices.GetRequiredService<ITempDataProvider>();
+            var viewContext = new ViewContext(
+                actionContext,
+                viewResult.View,
+                viewDictionary,
+                new TempDataDictionary(actionContext.HttpContext, tempDataProvider),
+                sw,
+                new HtmlHelperOptions()
+            );
+
+            await viewResult.View.RenderAsync(viewContext);
+            return sw.ToString();
+        }
+
+        private string BuildEmailContentFallback(WorkflowExecutionContext context)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<!DOCTYPE html><html><head><meta charset='utf-8'><title>Form Submission</title></head>");
@@ -187,7 +325,7 @@ namespace DigitalWonderlab.MultiDomainEmail.Workflows
             return sb.ToString();
         }
 
-        private string BuildThankYouEmail(WorkflowExecutionContext context)
+        private string BuildThankYouEmailFallback(WorkflowExecutionContext context)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<!DOCTYPE html><html><head><meta charset='utf-8'><title>Thank You</title></head>");
