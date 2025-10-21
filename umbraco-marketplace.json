@@ -25,7 +25,7 @@
   "PackagesByAuthor": [],
   "RelatedPackages": [],
   "Screenshots": [],
-  "Tags": [ "Forms", "Email", "SMTP", "Multi-domain", "Multi-site", "reCAPTCHA" ],
+  "Tags": [ "umbraco-marketplace", "Forms", "Email", "SMTP", "Multi-domain", "Multi-site", "reCAPTCHA" ],
   "Title": "Multi-Domain Email & Forms",
   "VersionSpecificPackageIds": [
     {
