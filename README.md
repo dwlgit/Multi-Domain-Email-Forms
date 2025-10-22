@@ -12,8 +12,11 @@ Multi-domain SMTP and reCAPTCHA support for Umbraco Forms. Perfect for multi-sit
 
 ## Installation
 
-```bash
+```.NET CLI
 dotnet add package DigitalWonderlab.MultiDomainEmail
+```
+```.Package Manager Console
+NuGet\Install-Package DigitalWonderlab.MultiDomainEmail
 ```
 
 ## Requirements
@@ -81,11 +84,23 @@ Add to your `appsettings.json`:
    - **Email** - Recipient email address
    - **Subject** - Email subject line
    - **Show All Form Fields** - Include all fields (checkbox)
-   - **Custom Message** - Optional message (supports tokens)
+   - **Custom Message** - Optional message
    - **Send Copy To Submitter** - Send confirmation email (checkbox)
    - **Submitter Email Field** - Field alias for submitter's email
 
 The workflow automatically uses the correct SMTP settings for the current domain.
+
+### Using Multi-Domain reCAPTCHA
+
+To use reCAPTCHA v3 with Umbraco Forms across multiple domains:
+
+1. **Configure your reCAPTCHA keys** in `appsettings.json` (see Configuration section above)
+2. **Add a reCAPTCHA field** to your Umbraco Form:
+   - In the form designer, add a new field
+   - Choose "Recaptcha 3" as the field type
+3. **The package automatically handles the rest** - each domain will use its own reCAPTCHA keys
+
+**Note:** The reCAPTCHA configuration only affects Umbraco Forms' built-in reCAPTCHA v3 fields. Custom reCAPTCHA implementations are not affected.
 
 ### Token Replacement
 
@@ -149,7 +164,7 @@ On first startup, the package extracts customizable email templates to:
 
 ### Local Development
 
-For local testing with tools (like MailHog):
+For local testing with email capture tools like [MailHog](https://github.com/mailhog/MailHog) or [Papercut SMTP](https://github.com/ChangemakerStudios/Papercut-SMTP):
 - Use `localhost` (without port) in your configuration
 - Works with any local port: `:5000`, `:44322`, `:3000`, etc.
 - No need to configure multiple entries for different ports
