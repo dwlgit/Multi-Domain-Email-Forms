@@ -12,9 +12,11 @@ Multi-domain SMTP and reCAPTCHA support for Umbraco Forms. Perfect for multi-sit
 
 ## Installation
 
+**.NET CLI**
 ```.NET CLI
 dotnet add package DigitalWonderlab.MultiDomainEmail
 ```
+**Package Manager Console**
 ```.Package Manager Console
 NuGet\Install-Package DigitalWonderlab.MultiDomainEmail
 ```
