@@ -30,6 +30,18 @@
     {
       "UmbracoMajorVersion": 13,
       "PackageId": "DigitalWonderlab.MultiDomainEmail"
+    },
+    {
+      "UmbracoMajorVersion": 14,
+      "PackageId": "DigitalWonderlab.MultiDomainEmail"
+    },
+    {
+      "UmbracoMajorVersion": 15,
+      "PackageId": "DigitalWonderlab.MultiDomainEmail"
+    },
+    {
+      "UmbracoMajorVersion": 16,
+      "PackageId": "DigitalWonderlab.MultiDomainEmail"
     }
   ],
   "VideoUrl": ""
